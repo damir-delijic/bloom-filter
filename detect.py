@@ -1,38 +1,36 @@
 import helper
-from bitarray import bitarray
 
-max_value, seeds = helper.read_detection_parameters('filter\\parameters.txt')
+filters, seeds = helper.read_model('model\\bloom_filter.txt')
 
-max_value = int(max_value, 10)
-
-for i in range(len(seeds)):
-    seeds[i] = int(seeds[i], 10)
+print(filters, seeds)
 
 data = helper.read_test_data('data\\test.txt')
 
-bloom = helper.load_bloom_filter('filter\\bloom_filter.txt')
-bloom = bitarray(bloom)
+number_of_shingles = len(data)
+number_of_documents = len(data[0])
 
+print('doc nums', number_of_documents)
+print('shingle nums', number_of_shingles)
 
-signatures = helper.initialize_signature_matrix(len(data[0]), len(seeds), max_value)
+result = [True for _ in range(number_of_documents)]
 
+for i in range(len(seeds)):
+    signature_vector = helper.initialize_signature_vector(number_of_documents, number_of_shingles)
+    seed = seeds[i]
 
+    for row_num in range(len(data)):
+        vector = data[row_num]
+        helper.update_vector_signatures(signature_vector, seed, vector, row_num, number_of_shingles)
 
-count = 0
+    bloom_filter = filters[i]
 
-for row in data:
-    helper.update_signatures(signatures, seeds, row, count, max_value)
-    count += 1
-
-result = [0 for _ in range(len(data[0]))]
-
-for i in range(len(signatures[0])):
-    for j in range(len(signatures)):
-        if bloom[signatures[j][i]] == '1' or bloom[signatures[j][i]] == 1:
-            result[i] += 1
+    for j in range(len(signature_vector)):
+        j_doc_hash = signature_vector[j]
+        if bloom_filter[j_doc_hash] == 1 or bloom_filter[j_doc_hash] == '1':
+            result[j] = result[j] and True
         else:
-            pass
+            result[j] = result[j] and False
 
-print(result, len(signatures))
+print(result)
 
 

@@ -34,7 +34,6 @@ print('seeds', seeds)
 for i in range(number_of_hash_functions):
     #  inicijalizacija blumovog filtera
     bloom_filter = helper.initialize_bloom_filter(number_of_bits_in_bloom_filter)
-    print('filter', bloom_filter)
     # inicijalizacija matrice signatura
     signature_vector = helper.initialize_signature_vector(number_of_documents, number_of_shingles)
 
@@ -58,9 +57,11 @@ for i in range(number_of_hash_functions):
     for j in range(len(signature_vector)):
             position = signature_vector[j]
             bloom_filter[position] = 1
+    print(bloom_filter)
 
     isFirst = i == 0
-    helper.save_bloom_filter(bloom_filter, seeds[i], "model\\bloom_filter.txt", isFirst)
+    isLast = i == number_of_hash_functions - 1
+    helper.save_bloom_filter(bloom_filter, seeds[i], "model\\bloom_filter.txt", isFirst, isLast)
 
 
 

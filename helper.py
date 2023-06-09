@@ -19,7 +19,7 @@ def initialize_signature_matrix(number_of_documents, number_of_hash_functions, i
     return [[infinity for _ in range(number_of_documents)] for _ in range(number_of_hash_functions)]
 
 def initialize_signature_vector(number_of_documents, infinity):
-    return [infinity for _ in range(number_of_documents)]
+    return [infinity - 1 for _ in range(number_of_documents)]
 
 def initialize_bloom_filter(m):
     return bitarray(m)
@@ -83,7 +83,7 @@ def old_hash_with_seed(data, seed, modulator):
     return modulated
 
 
-def save_bloom_filter(bitarray, seed, filename, isFirst):
+def save_bloom_filter(bitarray, seed, filename, isFirst, isLast):
     readMode = ""
     if isFirst:
         readMode = "w"
@@ -95,8 +95,9 @@ def save_bloom_filter(bitarray, seed, filename, isFirst):
         myfile.write('\n')
         for i in range(len(bitarray)):
                 myfile.write(str(bitarray[i]))
-        myfile.write('\n')
-        myfile.write('\n')
+        if not isLast:
+            myfile.write('\n')
+            myfile.write('\n')
 
 def save_parameters_necessary_for_detection(max_value, seeds, filename):
      with open(filename, "w") as myfile:
@@ -164,3 +165,35 @@ def load_bloom_filter(filename):
     file.close()
 
     return all_of_it
+
+
+def read_model(filename):
+    bloom_filters = []
+    seeds = []
+
+    file = open(filename, 'r')
+
+    while True:
+        # Get next line from file
+        line = file.readline()
+        if not line:
+            break
+        
+        line = line.replace('\n', '')
+        seed = int(line, 10)
+        number = ''
+        while line and not line == '\n':
+            line = file.readline()
+            number += line
+        number = number.replace('\n', '')
+
+        bloom = bitarray(number)
+
+        seeds.append(seed)
+        bloom_filters.append(bloom)
+        if not line:
+            break
+
+    file.close()
+
+    return bloom_filters, seeds
