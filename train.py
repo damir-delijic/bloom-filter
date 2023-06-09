@@ -21,10 +21,8 @@ while True:
 
 number_of_bits_in_bloom_filter = number_of_shingles
 number_of_hash_functions = helper.calculate_number_of_hash_functions(number_of_documents, number_of_bits_in_bloom_filter)
-number_of_hash_functions = 2
 # generise seedove za hes funkciju, jedna hes fja + k seedova = k hes fja
-# seeds = helper.generate_seeds(number_of_hash_functions)
-seeds = [3, 4]
+seeds = helper.generate_seeds(number_of_hash_functions)
 
 print('singles num', number_of_shingles)
 print('docs num', number_of_documents)
