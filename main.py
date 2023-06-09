@@ -4,13 +4,13 @@ import helper
 # bira se m na osnovu n, pa na osnovu toga se racuna optimalno k
 
 max_value = 499 # broj singolva rucno se unosi
-filename = 'test.txt' # rucno se unosi
+filename = 'dataset.txt' # rucno se unosi
 
 n = 50 # broj dokumenata u korpusu
 # m = 2**30 # broj bita u filteru
 # k = helper.calculate_number_of_hash_functions(n, m)
 k = 5
-m = 2**12
+# m = 2**12
 
 # generise seedove za hes funkciju, jedna hes fja + k seedova = k hes fja
 # seeds = helper.generate_seeds(k)
@@ -18,7 +18,7 @@ seeds = [5, 15, 26, 57, 65]
 print('Seeds: ', seeds)
 
 #  inicijalizacija blumovog filtera
-bloom = helper.initialize_bloom_filter(m)
+# bloom = helper.initialize_bloom_filter(m)
 
 # inicijalizacija matrice signatura
 signatures = helper.initialize_signature_matrix(n, k, max_value)

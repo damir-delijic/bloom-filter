@@ -25,8 +25,7 @@ def calculate_number_of_hash_functions(number_of_documents, bloom_filter_size):
     return math.floor((bloom_filter_size/number_of_documents) * math.log(2)) # broj permutacija / hes funkcija
 
 def hash_with_seed(row_number, seed, number_of_shingles):
-    # return (seed * row_number + seed) % number_of_shingles
-    return ()
+    return (seed * row_number + seed) % number_of_shingles
 
 def update_signatures(signatures, seeds, row, row_num, number_of_shingles):
    
