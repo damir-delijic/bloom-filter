@@ -1,13 +1,13 @@
 import random
 
-number_of_documents = 50
-number_of_shingles = 500
-sparcity_percentage = 91
-filename = "train.txt"
+number_of_documents = 10
+number_of_shingles = 10
+sparcity_percentage = 72
+filename = "data\\train.txt"
 
 print('started')
 
-with open(filename, "a") as myfile:
+with open(filename, "w") as myfile:
     for i in range(0, number_of_shingles):
         for j in range(0, number_of_documents):
             random_num = random.randint(1, 100)

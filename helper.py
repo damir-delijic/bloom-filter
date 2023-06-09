@@ -14,28 +14,40 @@ def generate_seeds(number_of_seeds):
         start = end + 1
         end = 2 * end + 1
     return result
-
+    
 def initialize_signature_matrix(number_of_documents, number_of_hash_functions, infinity):
     return [[infinity for _ in range(number_of_documents)] for _ in range(number_of_hash_functions)]
+
+def initialize_signature_vector(number_of_documents, infinity):
+    return [infinity for _ in range(number_of_documents)]
 
 def initialize_bloom_filter(m):
     return bitarray(m)
 
 def calculate_number_of_hash_functions(number_of_documents, bloom_filter_size):
-    return math.floor((bloom_filter_size/number_of_documents) * math.log(2)) # broj permutacija / hes funkcija
+    return math.ceil((bloom_filter_size/number_of_documents) * math.log(2)) # broj permutacija / hes funkcija
 
 def hash_with_seed(row_number, seed, number_of_shingles):
-    return (seed * row_number + seed) % number_of_shingles
+    return (seed * (row_number + 1) + seed) % number_of_shingles
+
+def update_vector_signatures(signatures, seed, vector, row_num, number_of_shingles):
+    r = row_num
+    row_hash = hash_with_seed(r, seed, number_of_shingles)
+
+    for column in range(len(vector)):
+        if vector[column] == '0' or vector[column] == 0:
+            pass
+        else:
+           if row_hash < signatures[column]:
+                signatures[column] = row_hash
 
 def update_signatures(signatures, seeds, row, row_num, number_of_shingles):
-   
-
     r = row_num
     row_hashes = []
     for i in range(len(seeds)):
         row_hashes.append(hash_with_seed(r, seeds[i], number_of_shingles))
-    row = row.replace('\n', '')
-    vector = row.split(',')
+   
+    vector = row
 
     for column in range(len(vector)):
         if vector[column] == '0':
@@ -71,10 +83,20 @@ def old_hash_with_seed(data, seed, modulator):
     return modulated
 
 
-def save_bloom_filter(bitarray, filename):
-    with open(filename, "w") as myfile:
+def save_bloom_filter(bitarray, seed, filename, isFirst):
+    readMode = ""
+    if isFirst:
+        readMode = "w"
+    else:
+        readMode = "a"
+
+    with open(filename, readMode) as myfile:
+        myfile.write(str(seed))
+        myfile.write('\n')
         for i in range(len(bitarray)):
                 myfile.write(str(bitarray[i]))
+        myfile.write('\n')
+        myfile.write('\n')
 
 def save_parameters_necessary_for_detection(max_value, seeds, filename):
      with open(filename, "w") as myfile:
@@ -89,6 +111,47 @@ def save_parameters_necessary_for_detection(max_value, seeds, filename):
                 seed_str += ','
         myfile.write(seed_str)
                 
+def read_detection_parameters(filename):
+    max_value = 0
+    seeds = []
+
+    file = open(filename, 'r')
+    count = 0
+
+    while True:
+        # Get next line from file
+        line = file.readline()
+        if not line:
+            break
+        if count == 0:
+            max_value = line
+        else:
+            seeds = line.split(',')
+        count += 1
+
+    file.close()
+
+    return max_value, seeds
+
+def read_test_data(filename):
+    vectors = []
+
+    file = open(filename, 'r')
+    count = 0
+
+    while True:
+        # Get next line from file
+        line = file.readline()
+        if not line:
+            break
+        line = line.replace('\n', '')
+        vectors.append(line.split(','))
+
+        count += 1
+
+    file.close()
+
+    return vectors
 
 def load_bloom_filter(filename):
     # Open a file: file
