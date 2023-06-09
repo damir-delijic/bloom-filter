@@ -69,3 +69,35 @@ def old_hash_with_seed(data, seed, modulator):
     modulated = decimal % modulator
 
     return modulated
+
+
+def save_bloom_filter(bitarray, filename):
+    with open(filename, "w") as myfile:
+        for i in range(len(bitarray)):
+                myfile.write(str(bitarray[i]))
+
+def save_parameters_necessary_for_detection(max_value, seeds, filename):
+     with open(filename, "w") as myfile:
+        myfile.write(str(max_value))
+        myfile.write('\n')
+        seed_str = ''
+        for i in range(len(seeds)):
+            seed_str += (str(seeds[i]))
+            if i == len(seeds) - 1:
+                pass
+            else:
+                seed_str += ','
+        myfile.write(seed_str)
+                
+
+def load_bloom_filter(filename):
+    # Open a file: file
+    file = open(filename,mode='r')
+    
+    # read all lines at once
+    all_of_it = file.read()
+    
+    # close the file
+    file.close()
+
+    return all_of_it

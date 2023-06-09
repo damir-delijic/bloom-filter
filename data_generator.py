@@ -3,7 +3,7 @@ import random
 number_of_documents = 50
 number_of_shingles = 500
 sparcity_percentage = 91
-filename = "dataset.txt"
+filename = "train.txt"
 
 print('started')
 
