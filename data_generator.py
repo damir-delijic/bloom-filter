@@ -1,10 +1,10 @@
 import random
 
-number_of_documents = 200
+number_of_documents = 10
 number_of_shingles = 3000
 sparcity_percentage = 90
 sparcity_deviation = 3
-filename = "data\\train.txt"
+filename = "data\\test.txt"
 
 print('started')
     
