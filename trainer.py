@@ -34,7 +34,7 @@ def get_seeds(k):
     return prime_seeds[0 : k]
 
 def initialize_signature_vector(corpus_size, fake_infinity):
-    return [fake_infinity - 1 for _ in range(corpus_size)]
+    return [fake_infinity for _ in range(corpus_size)]
 
 def row_permutation(r, seed, modulator):
     return (seed * (r + 1) + 1) % modulator
@@ -78,7 +78,7 @@ def train(filename, model_path):
   
     for i in range(k):
         
-        bloom = bitarray(bloom_size)
+        bloom = bloom_size * bitarray('0')
         vector = initialize_signature_vector(corpus_size=corpus_size, fake_infinity=shingles_num)
         seed = seeds[i]
         # cita iz fajla liniju po liniju i racuna potpise
@@ -102,7 +102,8 @@ def train(filename, model_path):
 
         for j in range(len(vector)):
                 position = vector[j]
-                bloom[position] = 1
+                if position < max_r:
+                    bloom[position] = 1
 
         is_first = i == 0
         is_last = i == k - 1

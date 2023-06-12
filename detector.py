@@ -76,15 +76,16 @@ def detect(model_path, data_path):
         bloom = blooms[i]
         vector = trainer.initialize_signature_vector(corpus_size=corpus_size, fake_infinity=shingles_num)
         seed = seeds[i]
+        max_r = shingles_num
 
         for j in range(len(data)):
             row = data[j]
-            trainer.update_vector_signatures(vector=vector, seed=seed, row=row, row_num=j, modulator=shingles_num)
+            trainer.update_vector_signatures(vector=vector, seed=seed, row=row, row_num=j, modulator=max_r)
 
         for j in range(len(vector)):
             doc_minhash = vector[j]
             if result[j] == 1:
-                if bloom[doc_minhash] == 1 or bloom[doc_minhash] == '1':
+                if doc_minhash < max_r and (bloom[doc_minhash] == 1 or bloom[doc_minhash] == '1'):
                     pass
                 else:
                     result[j] = -1
