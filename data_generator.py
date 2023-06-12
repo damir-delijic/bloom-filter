@@ -6,7 +6,7 @@ sparcity_percentage = 72
 filename = "data\\train.txt"
 
 print('started')
-
+    
 with open(filename, "w") as myfile:
     for i in range(0, number_of_shingles):
         for j in range(0, number_of_documents):
