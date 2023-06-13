@@ -70,7 +70,7 @@ def detect(model_path, data_path):
     shingles_num = len(data)
     corpus_size = len(data[0])
 
-    result = [1 for _ in range(corpus_size)]
+    result = [0 for _ in range(corpus_size)]
 
     for i in range(k):
         bloom = blooms[i]
@@ -82,14 +82,11 @@ def detect(model_path, data_path):
             row = data[j]
             trainer.update_vector_signatures(vector=vector, seed=seed, row=row, row_num=j, modulator=max_r)
 
-        for j in range(len(vector)):
-            doc_minhash = vector[j]
-            if result[j] == 1:
-                if doc_minhash < max_r and (bloom[doc_minhash] == 1 or bloom[doc_minhash] == '1'):
-                    pass
-                else:
-                    result[j] = -1
-
+        for doc in range(len(vector)):
+            minhash = vector[doc]
+            if minhash < max_r and (bloom[minhash] == 1 or bloom[minhash] == '1'):
+                result[doc] += 1
+    print('Total number of filters: ', k)
     print(result)
 
 

@@ -4,7 +4,7 @@ import detector
 print("bloom method: ")
 trainer.train('data\\train.txt', 'model\\bloom.txt')
 detector.detect('model\\bloom.txt', 'data\\test.txt')
-
+exit()
 import numpy as np
 from sklearn import svm
 

@@ -26,7 +26,7 @@ def count_dataset_dimensions(filename):
         shingles_num += 1
 
     file.close()
-
+    print(corpus_size, shingles_num)
     return corpus_size, shingles_num
 
 def get_seeds(k):
