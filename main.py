@@ -19,18 +19,14 @@ rows_num = 5
 
 # trainer.train(train_file, permutations_num, bands_num, rows_num)
 
-test_file = 'data\\identical.txt'
+test_file = 'data\\test.txt'
 model_file = 'model\\bloom.txt'
 
 
 detectionResult = detector.detect(model_file, test_file, bands_num, rows_num)
 
-print(detectionResult)
+calculationResult = distanceCalculator.calculate(train_file, test_file, 0.5)
 
-
-
-# calculationResult = distanceCalculator.calculate(train_file, test_file, 0.9)
-
-# print('Detection | Calculation')
-# for i in range(len(detectionResult)):
-#     print(detectionResult[i], calculationResult[i])
+print('Detection | Calculation')
+for i in range(len(detectionResult)):
+    print(detectionResult[i], calculationResult[i])

@@ -8,6 +8,8 @@ def calculate(training_file_path, testing_file_path, similarity_limit):
     number_of_train_documents, shingles_num = trainer.calculate_characteristic_matrix_dimensions(training_file_path)
     number_of_test_documents, shingles_num = trainer.calculate_characteristic_matrix_dimensions(testing_file_path)
 
+    print('Number of training documents: ', number_of_train_documents)
+    print('Number of testing documents: ', number_of_test_documents)
 
     # redovi test dokumenti
     # kolone train dokumenti
@@ -33,15 +35,17 @@ def calculate(training_file_path, testing_file_path, similarity_limit):
         
         train_vec = train_line.replace('\n', '').split(',')
         test_vec = test_line.replace('\n', '').split(',')
+
+        count += 1
         for i in range(len(test_vec)):
             test_document = test_vec[i] # ovo je u stvari 0 ili 1 odnosno da li sadrzi taj singl
             for j in range(len(train_vec)):
                 train_document = train_vec[j] # ovo je 0 ili 1, da li testni dokument sadrzi singl
-                if str(test_document) == "1" and str(train_document) == "1": # ako oba sadrze ovaj singl onda se povecava presjek
+                if test_document == '1' and train_document == '1': # ako oba sadrze ovaj singl onda se povecava presjek
                     similarity_matrix[i][j][0] += 1
-                elif str(test_document) == "0" and str(train_document) == "1":
+                elif test_document == '0' and train_document == '1':
                     similarity_matrix[i][j][1] += 1 # ako barem jedan onda uniju povecava
-                elif str(test_document) == "1" and str(train_document) == "0":
+                elif test_document == '1' and train_document == '0':
                     similarity_matrix[i][j][1] += 1 # ako barem jedan onda uniju povecava
                 else:
                     pass
@@ -56,7 +60,11 @@ def calculate(training_file_path, testing_file_path, similarity_limit):
         result = 0
         for j in range(len(similarity_matrix[i])):
             temp = similarity_matrix[i][j]
-            sim = temp[0] / (temp[0] + temp[1])
+            if temp[1] + temp[0] == 0:
+                sim = 0
+            else:
+                sim = temp[0] / (temp[0] + temp[1])
+
             if sim > similarity_limit:
                 result += 1
             
@@ -65,5 +73,10 @@ def calculate(training_file_path, testing_file_path, similarity_limit):
     print('Finished calculating similarites son')
     return similarity_matrix
     
+train_file = 'data\\train.txt'
+test_file = 'data\\test.txt'
+similarity = 0.3
 
 
+result = calculate(train_file, test_file, similarity)
+print(result)
