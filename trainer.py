@@ -1,5 +1,5 @@
 from bitarray import bitarray
-import sys
+import random
 
 def permute_row(r, seed, modulator):
     return (seed * r + 1) % modulator
@@ -26,9 +26,25 @@ def calculate_characteristic_matrix_dimensions(input_path):
     file.close()
     return docs_num, shingles_num
 
-def generate_seeds(count):
-    prime_seeds = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229]
-    return prime_seeds[0 : count]
+def generate_seeds(count, seed_value_limit):
+    seeds = []
+    for i in range(count):
+        random_seed = random.randint(1, seed_value_limit)
+        isKnown = False
+        for j in range(len(seeds)):
+            if seeds[j] == random_seed:
+                isKnown = True
+                break
+        
+        while isKnown:
+            random_seed = random.randint(1, seed_value_limit)
+            isKnown = False
+            for j in range(len(seeds)):
+                if seeds[j] == random_seed:
+                    isKnown = True
+        
+        seeds.append(random_seed)
+    return seeds
 
 def initialize_signature_matrix(docs_num, permutations_num, fake_infinity):
     return [[ fake_infinity for __ in range(docs_num)] for _ in range(permutations_num)]
@@ -108,7 +124,7 @@ def train(input_path, permutations_num, b, r, bloom_size):
     # broj permutacija da bude jedna b puta r
     print('started training son')
     docs_num, shingles_num = calculate_characteristic_matrix_dimensions(input_path)
-    seeds = generate_seeds(permutations_num)
+    seeds = generate_seeds(count=permutations_num, seed_value_limit=permutations_num * 10)
     sig_mat = compute_singature_matrix(input_path=input_path, seeds=seeds, docs_num=docs_num, shingles_num=shingles_num)
     bands_mat = banding(sig_mat=sig_mat, b=b, r=r, docs_num=docs_num, prime_factor=bloom_size)
     bloom = compute_bloom(bands_mat=bands_mat, bloom_size=bloom_size)
@@ -122,8 +138,3 @@ def save_bloom(bloom, seeds, filename):
         myfile.write('\n')
         for i in range(len(bloom)):
                 myfile.write(str(bloom[i]))
-
-prime_around_gigabyte = 8589934609
-
-prime_around_megabyte = 8388617
-
