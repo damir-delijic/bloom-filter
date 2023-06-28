@@ -100,13 +100,13 @@ number_of_test_documents = 50
 # number_of_shingles = random.randint(2000, 4000)
 number_of_shingles = 3989 # prime
 
-print('started')
+# print('started')
 # print('generating training data')
 # generate_two_clusters('train.txt', number_of_train_documents, number_of_shingles)
 # print('generating test data')
-# generate_two_clusters('test.txt', number_of_test_documents, number_of_shingles)
-# print('all done son')
+# # generate_two_clusters('test.txt', number_of_test_documents, number_of_shingles)
+# # print('all done son')
 
-print('generating test data')
-generate_two_test_clusters('test.txt', number_of_test_documents, number_of_shingles)
-print('all done son')
+# print('generating test data')
+# generate_two_test_clusters('test.txt', number_of_test_documents, number_of_shingles)
+# print('all done son')

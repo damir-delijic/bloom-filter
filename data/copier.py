@@ -1,5 +1,5 @@
 file = open('train.txt', 'r')
-temp = open('test.txt', 'w')
+temp = open('identical.txt', 'w')
 
 num = 50
 while True:

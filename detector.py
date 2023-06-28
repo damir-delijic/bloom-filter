@@ -50,8 +50,8 @@ def detect(model_path, data_path, b, r):
     print('Started detection son')
 
     bloom, seeds = read_model(model_path)
-    print('Bloom: ', bloom)
-    print('Seeds: ', seeds)
+    # print('Bloom: ', bloom)
+    # print('Seeds: ', seeds)
 
 
     for i in range(len(seeds)):
@@ -82,7 +82,7 @@ def detect(model_path, data_path, b, r):
     for band in bands_mat:
         for i in range(len(band)):
             hash_value = band[i]
-            if hash_value < shingles_num and (bloom[hash_value] == 1 or bloom[hash_value] == '1'):
+            if bloom[hash_value] == 1 or bloom[hash_value] == '1':
                 result[i] = 1
     
     print('Finished detecting son')

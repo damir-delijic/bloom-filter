@@ -1,6 +1,13 @@
 import trainer
 import detector
 import distanceCalculator
+
+
+import os
+ 
+# Clearing the Screen
+
+
 # prime_around_gigabyte = 8589934609
 
 # prime_around_megabyte = 8388617
@@ -18,8 +25,12 @@ model_file = 'model\\bloom.txt'
 
 detectionResult = detector.detect(model_file, test_file, bands_num, rows_num)
 
-calculationResult = distanceCalculator.calculate(train_file, test_file, 0.9)
+print(detectionResult)
 
-print('Detection | Calculation')
-for i in range(len(detectionResult)):
-    print(detectionResult[i], calculationResult[i])
+
+
+# calculationResult = distanceCalculator.calculate(train_file, test_file, 0.9)
+
+# print('Detection | Calculation')
+# for i in range(len(detectionResult)):
+#     print(detectionResult[i], calculationResult[i])
